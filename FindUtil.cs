@@ -11,7 +11,7 @@ namespace AlonUnityUtils
         {
             return gameObject
                 .GetComponentsInChildren<T>(true)
-                .FirstOrDefault(comp => comp.name == str);
+                .First(comp => comp.name == str);
         }
 
         static public T FindComponentMatchStringGlobal<T>(string str) where T : Component
@@ -91,7 +91,7 @@ namespace AlonUnityUtils
                 } else if (type == typeof(Transform)) {
                     field.SetValue(obj, FindTransformMatchName(field.Name));
                 } else {
-                    Debug.LogError($"Error: TRhe object {obj} has a SceneDependency with an unsupported type: {type}. Currently only GameObject and Transform are supported.");
+                    Debug.LogError($"Error: The object {obj} has a SceneDependency with an unsupported type: {type}. Currently only GameObject and Transform are supported.");
                 }
             }
         }
