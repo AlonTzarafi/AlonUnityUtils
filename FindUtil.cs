@@ -7,74 +7,56 @@ namespace AlonUnityUtils
 {
     public static class FindUtil
     {
-        static public T FindComponentMatchString<T>(GameObject gameObject, string str) where T : Component
+        static public T In<T>(GameObject gameObject, string str, bool optional = false) where T : Component
         {
-            return gameObject
-                .GetComponentsInChildren<T>(true)
-                .First(comp => comp.name == str);
+            return ChildComponentByName<T>(gameObject, str, optional);
         }
 
-        static public T FindComponentMatchStringGlobal<T>(string str) where T : Component
+        static public Transform ChildTransformByName(GameObject galleryScreen, string v)
+        {
+            return ChildComponentByName<Transform>(galleryScreen, v);
+        }
+
+        static public GameObject ChildByName(GameObject galleryScreen, string v)
+        {
+            return ChildComponentByName<Transform>(galleryScreen, v).gameObject;
+        }
+
+        static public T ChildComponentByName<T>(GameObject gameObject, string str, bool optional = false) where T : Component
+        {
+            var allComponents = gameObject.GetComponentsInChildren<T>(true);
+            
+            if (!optional) { 
+                return allComponents.First(comp => comp.name == str);
+            } else {
+                return allComponents.FirstOrDefault(comp => comp.name == str);
+            }
+        }
+
+        static public T ComponentByName<T>(string str) where T : Component
         {
             return GameObject.FindObjectsOfType<T>(true)
                 .First(go => go.name == str);
         }
 
-        static public List<GameObject> FindGameObjectsMatchName(string str)
+        static public List<GameObject> GameObjectsByName(string str)
         {
             Debug.Log($"Finding GO with name: {str}");
             return GameObject.FindObjectsOfType<GameObject>()
                 .Where(go => go.name == str)
                 .ToList();
         }
-        static public GameObject FindGameObjectMatchName(string str)
+        static public GameObject GameObjectByName(string str)
         {
             Debug.Log($"Finding GO with name: {str}");
             return GameObject.FindObjectsOfType<GameObject>()
                 .First(go => go.name == str);
         }
-        static public Transform FindTransformMatchName(string str)
+        static public Transform TransformByName(string str)
         {
             Debug.Log($"Finding GO with name: {str}");
             return GameObject.FindObjectsOfType<Transform>()
                 .First(go => go.name == str);
-        }
-
-        static public List<GameObject> GetChildren(GameObject obj)
-        {
-            var a = new List<GameObject>();
-            for (int i = 0; i < obj.transform.childCount; i++) {
-                a.Add(obj.transform.GetChild(i).gameObject);
-            }
-            return a;
-        }
-
-        static public GameObject[] GetChildrenArray(GameObject obj)
-        {
-            var a = new GameObject[obj.transform.childCount];
-            for (int i = 0; i < obj.transform.childCount; i++) {
-                a[i] = obj.transform.GetChild(i).gameObject;
-            }
-            return a;
-        }
-
-        static public int GetChildIndex(GameObject gameObject)
-        {
-            return GetChildIndex(gameObject.transform);
-        }
-        
-        static public int GetChildIndex(Transform transform)
-        {
-            var parent = transform.parent;
-            for (int i = 0; i < parent.childCount; i++) {
-                if (parent.GetChild(i) == transform) {
-                    return i;
-                }
-            }
-            Debug.Log("CHILD NOT FOUND!!!", transform);
-            Debug.Log("IN PARENT!!!", parent);
-            Debug.LogError("ITS PROBLEM!!!!!");
-            return -1;
         }
 
         static public void ResolveSceneDependencies(object obj)
@@ -87,9 +69,9 @@ namespace AlonUnityUtils
             foreach (var field in fieldWithAttributes) {
                 var type = field.FieldType;
                 if (type == typeof(GameObject)) {
-                    field.SetValue(obj, FindGameObjectMatchName(field.Name));
+                    field.SetValue(obj, GameObjectByName(field.Name));
                 } else if (type == typeof(Transform)) {
-                    field.SetValue(obj, FindTransformMatchName(field.Name));
+                    field.SetValue(obj, TransformByName(field.Name));
                 } else {
                     Debug.LogError($"Error: The object {obj} has a SceneDependency with an unsupported type: {type}. Currently only GameObject and Transform are supported.");
                 }

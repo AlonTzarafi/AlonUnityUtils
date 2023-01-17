@@ -11,7 +11,7 @@ namespace AlonUnityUtils
 
         public SoundSystem(SoundConfig soundConfig)
         {
-            var audioSourceGameObject = new GameObject();
+            var audioSourceGameObject = new GameObject("SoundSystemAudioSource");
             audioSource = audioSourceGameObject.AddComponent<AudioSource>();
             this.soundConfig = soundConfig;
         }

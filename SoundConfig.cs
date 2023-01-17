@@ -9,7 +9,7 @@ namespace AlonUnityUtils
     public class SoundConfig : ScriptableObject
     {
         [SerializeField]
-        public List<SoundNameAndClip> sounds;
+        public List<SoundNameAndClips> sounds;
 
         public AudioClip GetClip(string soundName)
         {
@@ -25,15 +25,15 @@ namespace AlonUnityUtils
     }
 
     [Serializable]
-    public struct SoundNameAndClip
+    public struct SoundNameAndClips
     {
         public string name;
-        public AudioClip[] multipleClips;
+        public AudioClip[] clips;
 
         public AudioClip GetClip()
         {
-            if (multipleClips != null && multipleClips.Any()) {
-                return RandomUtil.Element(multipleClips);
+            if (clips != null && clips.Any()) {
+                return RandomUtil.Element(clips);
             }
             return null;
         }
