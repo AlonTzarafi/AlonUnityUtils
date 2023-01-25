@@ -21,6 +21,11 @@ namespace AlonUnityUtils
         {
             return ChildComponentByName<Transform>(galleryScreen, v).gameObject;
         }
+        
+        static public GameObject MaybeChildByName(GameObject galleryScreen, string v)
+        {
+            return ChildComponentByName<Transform>(galleryScreen, v, true)?.gameObject;
+        }
 
         static public T ChildComponentByName<T>(GameObject gameObject, string str, bool optional = false) where T : Component
         {
