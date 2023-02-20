@@ -10,5 +10,13 @@ namespace AlonUnityUtils
         {
             return array[Random.Range(0, array.Length)];
         }
+
+        static public T ElementOrDefault<T>(T[] array)
+        {
+            if (array.Length == 0)
+                return default(T);
+
+            return array[Random.Range(0, array.Length)];
+        }
     }
 }
