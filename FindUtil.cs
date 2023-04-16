@@ -46,20 +46,25 @@ namespace AlonUnityUtils
 
         static public List<GameObject> GameObjectsByName(string str)
         {
-            Debug.Log($"Finding GO with name: {str}");
+            // Debug.Log($"Finding GO with name: {str}");
             return GameObject.FindObjectsOfType<GameObject>()
                 .Where(go => go.name == str)
                 .ToList();
         }
-        static public GameObject GameObjectByName(string str)
+        static public GameObject GameObjectByName(string str, bool optional = false)
         {
-            Debug.Log($"Finding GO with name: {str}");
-            return GameObject.FindObjectsOfType<GameObject>()
-                .First(go => go.name == str);
+            // Debug.Log($"Finding GO with name: {str}");
+            if (!optional) {
+                return GameObject.FindObjectsOfType<GameObject>()
+                    .First(go => go.name == str);
+            } else {
+                return GameObject.FindObjectsOfType<GameObject>()
+                    .FirstOrDefault(go => go.name == str);
+            }
         }
         static public Transform TransformByName(string str)
         {
-            Debug.Log($"Finding GO with name: {str}");
+            // Debug.Log($"Finding GO with name: {str}");
             return GameObject.FindObjectsOfType<Transform>()
                 .First(go => go.name == str);
         }
