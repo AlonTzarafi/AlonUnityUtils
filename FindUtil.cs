@@ -31,11 +31,13 @@ namespace AlonUnityUtils
         {
             var allComponents = gameObject.GetComponentsInChildren<T>(true);
             
-            if (!optional) { 
-                return allComponents.First(comp => comp.name == str);
-            } else {
-                return allComponents.FirstOrDefault(comp => comp.name == str);
+            var result = allComponents.FirstOrDefault(comp => comp.name == str);
+
+            if (!optional && result == null) {
+                Debug.LogError($"Error: Could not find {typeof(T)} with name {str} in {gameObject.name} or its children.");
             }
+            
+            return result;
         }
 
         static public T ComponentByName<T>(string str) where T : Component
